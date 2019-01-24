@@ -11,7 +11,7 @@ from itertools import combinations
                                                          x.course.subject.department == z.course.subject.department and 
                                                          x.course.subject.program == z.course.subject.program and 
                                                          x.course.subject.semester == z.course.subject.semester and 
-                                                         x.course.group.id == z.course.group.id and x.id != z.id), classes)
+                                                         x.course.group.id == z.course.group.id), classes)
 
             classes = list(set(classes).difference(potential_conflict_group))
             number_of_conflicts += sum(x.timeslot.start_time in range(y.timeslot.start_time, y.timeslot.end_time) or
