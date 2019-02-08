@@ -9,17 +9,22 @@ def repeating_substrings(sentence, min_len=10, max_len=20, repeat_threshold=5):
     """
     total = 0
     observed = set() # substrings of various length already taken account for
+    valid = set() # substrings that indeed repeat at least repeat_threshold times
     for position in range(len(sentence) + 1 - min_len):
         for sub_len in range(max_len, min_len-1, -1):
             sub = sentence[position:position + sub_len]
-            sub_count = sentence[position:].count(sub)
-            if sub not in observed and sub_count >= repeat_threshold:
+            if sub not in observed:
                 observed.add(sub)
-                total += sub_count
-                yield sub, sub_count, total
+                sub_count = sentence[position:].count(sub)
+                if sub_count >= repeat_threshold:
+                    valid.add(sub)
+                    total += sub_count
+                    yield sub, sub_count, total, len(valid)
 
-for sub, sub_count, total in repeating_substrings("abababadcdc", min_len=2, max_len=3, repeat_threshold=2):
-    print(f"substring: '{sub}'\ncount: {sub_count}\ntotal count: {total}\n")
+for sub, sub_count, total_repetitions, unique in repeating_substrings("abababadcdc", min_len=2, max_len=3, repeat_threshold=2):
+    print(f"substring: '{sub}'\ncount: {sub_count}\ntotal count: {total_repetitions}\n")
+
+print(f"There are {unique} unique substrings, that repeat at least 2 times.")
 
 """ output
 substring: 'aba'
@@ -37,4 +42,6 @@ total count: 8
 substring: 'dc'
 count: 2
 total count: 10
+
+There are 4 unique substrings, that repeat at least 2 times.
 """
